@@ -38,3 +38,8 @@
 ## Локальный запуск
 
 Запуск сервиса с профилем `ide`
+
+### Сборка Docker-образа
+```bash
+ docker build -t job-market-analytics-service:local-stack .
+```

@@ -1,10 +1,6 @@
 server:
   port: 8086
 
-spring:
-  application:
-    name: job-market-analytics-service
-
   datasource:
     url: jdbc:postgresql://localhost:5432/it_mentor_community_platform?currentSchema=job-market-analytics-service
     username: root
