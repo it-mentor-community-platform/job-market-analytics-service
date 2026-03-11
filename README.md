@@ -38,3 +38,22 @@
 ## Локальный запуск
 
 Запуск сервиса с профилем `ide`
+
+- В IntelliJ IDEA
+    * Run -> Edit Configurations....
+    * В поле Active profiles введите имя профиля: `ide`
+
+---
+
+## Сборка и запуск local-stack профиля
+
+Собрать образ
+```bash
+ docker build -t job-market-analytics-service .
+```
+
+Запустить образ в Docker
+
+```bash
+ docker run --network local-stack_default -e SPRING_PROFILES_ACTIVE=local-stack -p 8086:8080 job-market-analytics-service
+```
