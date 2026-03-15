@@ -1,0 +1,62 @@
+### 201-Succefuly created
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 400-Validation failed (Title is required)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+
+{
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 400-Validation failed (Query is required)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "isEnabled": true
+}
+
+
+### 400-Validation failed (IsEnabled is required)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": null
+}
+
+
+### 400-Validation failed (IsEnabled is required)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA"
+}
+
+
+###
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": true
+}
