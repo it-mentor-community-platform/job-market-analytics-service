@@ -1,6 +1,8 @@
-### 201-Succefuly created
+### 201-Succefuly created / 409-Query already exists
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
+X-Telegram-User-id: 5
+X-User-Roles: ADMIN
 
 {
   "title": "Java Developer",
@@ -12,7 +14,8 @@ Content-Type: application/json
 ### 400-Validation failed (Title is required)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
-
+X-Telegram-User-id: 5
+X-User-Roles: ADMIN
 
 {
   "query": "NAME:(!\"Java\") NOT QA NOT AQA",
@@ -23,6 +26,8 @@ Content-Type: application/json
 ### 400-Validation failed (Query is required)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
+X-Telegram-User-id: 5
+X-User-Roles: ADMIN
 
 {
   "title": "Java Developer",
@@ -33,6 +38,8 @@ Content-Type: application/json
 ### 400-Validation failed (IsEnabled is required)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
+X-Telegram-User-id: 5
+X-User-Roles: ADMIN
 
 {
   "title": "Java Developer",
@@ -44,6 +51,8 @@ Content-Type: application/json
 ### 400-Validation failed (IsEnabled is required)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
+X-Telegram-User-id: 5
+X-User-Roles: ADMIN
 
 {
   "title": "Java Developer",
@@ -51,9 +60,35 @@ Content-Type: application/json
 }
 
 
-###
+### 403-Access denied (missing X-Telegram-User-id)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 403-Access denied (missing X-User-Roles)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+X-Telegram-User-id: 5
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 403-Access denied (wrong X-User-Roles)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+X-Telegram-User-id: 5
+X-User-Roles: STUDENT
 
 {
   "title": "Java Developer",
