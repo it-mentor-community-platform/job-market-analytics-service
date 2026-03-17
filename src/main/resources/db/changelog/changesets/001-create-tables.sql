@@ -2,7 +2,7 @@ CREATE TABLE search_queries
 (
     id         BIGSERIAL PRIMARY KEY,
     title      VARCHAR(255) NOT NULL,
-    query      TEXT         UNIQUE NOT NULL,
+    query      TEXT         NOT NULL,
     is_enabled BOOLEAN      NOT NULL
 );
 
