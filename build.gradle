@@ -19,10 +19,28 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	// --- Spring Boot Starters ---
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+	// --- Messaging ---
 	implementation 'org.springframework.kafka:spring-kafka'
+
+	// --- Database ---
 	runtimeOnly 'org.postgresql:postgresql'
+
+	// --- Monitoring & Metrics ---
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
+	// --- Rate Limiting ---
+	implementation 'com.bucket4j:bucket4j_jdk17-core:8.17.0'
+
+	// --- Lombok ---
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// --- Testing ---
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
