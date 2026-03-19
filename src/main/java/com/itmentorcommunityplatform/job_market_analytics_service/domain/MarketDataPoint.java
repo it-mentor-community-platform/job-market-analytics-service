@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-@RequiredArgsConstructor
 @Table("market_data_points")
 public class MarketDataPoint {
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Objects;
+
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -28,19 +30,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        String message = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(e.getBindingResult().getFieldError().getDefaultMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(message));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponseDto> handelAccessDeniedException(AccessDeniedException e) {
+        log.debug(e.getMessage());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponseDto(e.getMessage()));
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
-    public ResponseEntity<ErrorResponseDto> handleMissingHeader(MissingRequestHeaderException ex) {
-        log.warn("The required title is missing: {}", ex.getHeaderName());
+    public ResponseEntity<ErrorResponseDto> handleMissingHeader(MissingRequestHeaderException e) {
+        log.warn("The required title is missing: {}", e.getHeaderName());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponseDto(e.getBindingResult().getFieldError().getDefaultMessage()));
@@ -65,6 +69,7 @@ public class GlobalExceptionHandler {
 
         if (e.getCause() instanceof DuplicateKeyException) {
             if (e.getCause().getCause() instanceof PSQLException psql) {
+                assert psql.getServerErrorMessage() != null;
                 String message = psql.getServerErrorMessage().getDetail();
 
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDto(message));
@@ -75,8 +80,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        log.error(e.getMessage());
+        log.warn(e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDto("Internal server error"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto("Bad request"));
     }
 }

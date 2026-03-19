@@ -1,4 +1,4 @@
-package com.itmentorcommunityplatform.job_market_analytics_service.controllers;
+package com.itmentorcommunityplatform.job_market_analytics_service.controller;
 
 import com.itmentorcommunityplatform.job_market_analytics_service.dto.SearchQueryRequest;
 import com.itmentorcommunityplatform.job_market_analytics_service.dto.SearchQueryResponse;
@@ -21,8 +21,7 @@ public class SearchQueryController {
 
     @PostMapping("/search-query")
     public ResponseEntity<SearchQueryResponse> searchQuery(
-            @RequestHeader(value = "X-User-Roles") List<String> roles,
-            @RequestHeader(value = "X-Telegram-User-id") Long telegramUserId,
+            @RequestHeader("X-User-Roles") List<String> roles,
             @RequestBody @Valid SearchQueryRequest request) {
 
         if (roles == null || roles.stream().noneMatch(r -> r.equalsIgnoreCase("ADMIN"))) {
