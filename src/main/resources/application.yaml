@@ -1,3 +1,12 @@
 spring:
   application:
     name: job-market-analytics-service
+
+hh:
+  api:
+    url: https://api.hh.ru
+
+rate-limit:
+  capacity: 10
+  refill: 10
+  period: 60s
