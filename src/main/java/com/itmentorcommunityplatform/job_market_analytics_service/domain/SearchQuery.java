@@ -2,7 +2,6 @@ package com.itmentorcommunityplatform.job_market_analytics_service.domain;
 
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -12,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@RequiredArgsConstructor
 @Table("search_queries")
 public class SearchQuery {
 
