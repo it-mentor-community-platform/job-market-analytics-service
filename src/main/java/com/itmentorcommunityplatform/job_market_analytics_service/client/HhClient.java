@@ -21,7 +21,7 @@ public class HhClient {
     public String searchVacancies(String query) {
         if (!hhApiBucket.tryConsume(1)) {
             log.warn("HH API rate limit exceeded");
-            throw new RateLimitExceededException("Слишком много запросов к внешнему сервису");
+            throw new RateLimitExceededException("There are too many requests to an external service");
         }
 
         try {
@@ -33,13 +33,13 @@ public class HhClient {
                     .retrieve()
                     .body(String.class);
 
-            log.info("HH API response for query '{}': {}", query, response);
+            log.info("HH API request successful. query='{}'", query);
             return response;
 
         } catch (Exception e) {
             log.error("HH API request failed for query '{}'", query, e);
             profileMetrics.getRequestErrorCounter().increment();
-            throw new ExternalServiceException("Не удалось получить данные от внешнего сервиса");
+            throw new ExternalServiceException("Failed to fetch data from HH API");
         }
     }
 }
