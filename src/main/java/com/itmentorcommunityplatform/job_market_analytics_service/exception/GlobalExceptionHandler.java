@@ -32,36 +32,41 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         String message = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(message));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponseDto(message));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponseDto> handelAccessDeniedException(AccessDeniedException e) {
         log.debug(e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponseDto(e.getMessage()));
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponseDto(e.getMessage()));
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
     public ResponseEntity<ErrorResponseDto> handleMissingHeader(MissingRequestHeaderException e) {
-        log.warn("The required title is missing: {}", e.getHeaderName());
+        log.warn(e.getMessage());
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDto(e.getBindingResult().getFieldError().getDefaultMessage()));
+                .body(new ErrorResponseDto("Bad request"));
     }
 
     @ExceptionHandler(ExternalServiceException.class)
-    public ResponseEntity<ErrorResponseDto> handleExternalServiceException(ExternalServiceException ex) {
+    public ResponseEntity<ErrorResponseDto> handleExternalServiceException(ExternalServiceException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_GATEWAY)
-                .body(new ErrorResponseDto(ex.getMessage()));
+                .body(new ErrorResponseDto(e.getMessage()));
     }
 
     @ExceptionHandler(RateLimitExceededException.class)
-    public ResponseEntity<ErrorResponseDto> handleRateLimitExceededException(RateLimitExceededException ex) {
+    public ResponseEntity<ErrorResponseDto> handleRateLimitExceededException(RateLimitExceededException e) {
         return ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
-                .body(new ErrorResponseDto(ex.getMessage()));
+                .body(new ErrorResponseDto(e.getMessage()));
     }
 
     @ExceptionHandler(DbActionExecutionException.class)
@@ -72,7 +77,9 @@ public class GlobalExceptionHandler {
                 assert psql.getServerErrorMessage() != null;
                 String message = psql.getServerErrorMessage().getDetail();
 
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDto(message));
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(new ErrorResponseDto(message));
             }
         }
         throw e;
@@ -82,6 +89,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.warn(e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto("Bad request"));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponseDto("Bad request"));
     }
 }

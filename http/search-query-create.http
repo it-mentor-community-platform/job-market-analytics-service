@@ -55,7 +55,7 @@ X-User-Roles: ADMIN
 }
 
 
-### 403-Access denied (missing X-User-Roles)
+### 400-Bad request (missing X-User-Roles)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
 
