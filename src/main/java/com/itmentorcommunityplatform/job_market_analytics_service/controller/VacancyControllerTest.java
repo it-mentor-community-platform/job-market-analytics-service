@@ -16,7 +16,7 @@ public class VacancyControllerTest {
     private final VacancyService vacancyService;
 
     @PostMapping("/test-search")
-    public ResponseEntity<String> VacancySearchTest(@RequestParam String search) {
+    public ResponseEntity<String> vacancySearchTest(@RequestParam String search) {
         return ResponseEntity.ok(vacancyService.searchVacancies(search));
-    }
+    } 
 }

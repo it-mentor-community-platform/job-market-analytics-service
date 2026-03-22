@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExternalServiceException.class)
-    public ResponseEntity<ErrorResponseDto> handleExternalServiceException (ExternalServiceException ex) {
+    public ResponseEntity<ErrorResponseDto> handleExternalServiceException(ExternalServiceException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_GATEWAY)
                 .body(new ErrorResponseDto(ex.getMessage()));
