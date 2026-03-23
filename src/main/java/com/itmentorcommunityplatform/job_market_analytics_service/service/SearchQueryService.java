@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SearchQueryService {
@@ -22,6 +24,16 @@ public class SearchQueryService {
         SearchQuery saved = searchQueryRepository.save(searchQuery);
 
         return searchQueryMapper.mapToSearchQueryResponse(saved);
+    }
+
+    public List<SearchQueryResponse> getSearchQueries(Boolean isEnabled) {
+        List<SearchQuery> queries = isEnabled == null
+                ? searchQueryRepository.findAll()
+                : searchQueryRepository.findByIsEnabled(isEnabled);
+
+        return queries.stream()
+                .map(searchQueryMapper::mapToSearchQueryResponse)
+                .toList();
     }
 
     @Transactional
