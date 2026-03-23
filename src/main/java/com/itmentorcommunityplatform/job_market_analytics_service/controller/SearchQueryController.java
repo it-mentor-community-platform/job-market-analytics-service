@@ -49,4 +49,13 @@ public class SearchQueryController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/search-query")
+    public ResponseEntity<List<SearchQueryResponse>> getSearchQueries(
+            @RequestParam(required = false) Boolean isEnabled) {
+
+        List<SearchQueryResponse> responses = searchQueryService.getSearchQueries(isEnabled);
+
+        return ResponseEntity.ok(responses);
+    }
 }

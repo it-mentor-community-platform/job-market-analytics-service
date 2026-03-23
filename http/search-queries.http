@@ -1,0 +1,18 @@
+### 1. Successfully retrieve all search queries without filtering
+GET http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+
+### 2. Successfully retrieve only enabled search queries
+GET http://localhost:8086/api/job-market-analytics/search-query?isEnabled=true
+Content-Type: application/json
+
+
+### 3. Successfully retrieve only disabled search queries
+GET http://localhost:8086/api/job-market-analytics/search-query?isEnabled=false
+Content-Type: application/json
+
+
+### 4. Invalid isEnabled parameter (expected 400 Bad Request)
+GET http://localhost:8086/api/job-market-analytics/search-query?isEnabled=abc
+Content-Type: application/json
