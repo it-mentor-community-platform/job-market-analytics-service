@@ -24,7 +24,7 @@ public class SearchQueryController {
             @RequestHeader("X-User-Roles") List<String> roles,
             @RequestBody @Valid SearchQueryRequest request) {
 
-        if (roles == null || roles.stream().noneMatch(r -> r.equalsIgnoreCase("ADMIN"))) {
+        if (roles.stream().noneMatch("ADMIN"::equalsIgnoreCase)) {
             throw new AccessDeniedException("Access denied");
         }
 
@@ -33,5 +33,20 @@ public class SearchQueryController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PutMapping("/search-query/{id}")
+    public ResponseEntity<Void> updateSearchQuery(
+            @RequestHeader("X-User-Roles") List<String> roles,
+            @RequestBody @Valid SearchQueryRequest request,
+            @PathVariable("id") Long queryId) {
+
+        if (roles.stream().noneMatch("ADMIN"::equalsIgnoreCase)) {
+            throw new AccessDeniedException("Access denied");
+        }
+
+        searchQueryService.update(queryId, request);
+
+        return ResponseEntity.ok().build();
     }
 }

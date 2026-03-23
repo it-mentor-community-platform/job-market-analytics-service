@@ -1,4 +1,4 @@
-### 201-Succefuly created / 409-Query already exists
+### 201-Successfully created / 409-Query already exists
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
 X-User-Roles: ADMIN
@@ -58,6 +58,18 @@ X-User-Roles: ADMIN
 ### 400-Bad request (missing X-User-Roles)
 POST http://localhost:8086/api/job-market-analytics/search-query
 Content-Type: application/json
+
+{
+  "title": "Java Developer",
+  "query": "NAME:(!\"Java\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 403-Access denied (X-User-Roles is empty)
+POST http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+X-User-Roles:
 
 {
   "title": "Java Developer",

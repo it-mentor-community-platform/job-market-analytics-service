@@ -1,0 +1,114 @@
+### 200-Successfully updated (requires the existence of a record in the database id=1)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 400- Validation failed (invalid path id)
+PUT http://localhost:8086/api/job-market-analytics/search-query/abc
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 400-Validation failed (Title is missing)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 400-Validation failed (Query is missing)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Python Developer",
+  "isEnabled": true
+}
+
+
+### 400-Validation failed (IsEnabled is null)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": null
+}
+
+
+### 400-Validation failed (IsEnabled is missing)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA"
+}
+
+
+### 403-Access denied (X-User-Roles is missing)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 403-Access denied (X-User-Roles is empty)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles:
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 403-Access denied (X-User-Roles is wrong)
+PUT http://localhost:8086/api/job-market-analytics/search-query/1
+Content-Type: application/json
+X-User-Roles: STUDENT
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
+
+
+### 404-Search query not found
+PUT http://localhost:8086/api/job-market-analytics/search-query/9999999
+Content-Type: application/json
+X-User-Roles: ADMIN
+
+{
+  "title": "Python Developer",
+  "query": "NAME:(!\"Python\") NOT QA NOT AQA",
+  "isEnabled": true
+}
