@@ -1,0 +1,18 @@
+### 1. Успешное получение всех search queries без фильтации
+GET http://localhost:8086/api/job-market-analytics/search-query
+Content-Type: application/json
+
+
+### 2. Успешное получение только активных search queries
+GET http://localhost:8086/api/job-market-analytics/search-query?isEnabled=true
+Content-Type: application/json
+
+
+### 3. Успешное получение только неактивных search queries
+GET http://localhost:8086/api/job-market-analytics/search-query?isEnabled=false
+Content-Type: application/json
+
+
+### 4. Невалидный параметр isEnabled (ожидается 400)
+GET http://localhost:8086/api/job-market-analytics/search-query?isEnabled=abc
+Content-Type: application/json
