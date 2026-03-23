@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.11'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.11'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.itmentorcommunityplatform'
@@ -9,43 +9,51 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// --- Spring Boot Starters ---
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    // --- Spring Boot Starters ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
-	// --- Messaging ---
-	implementation 'org.springframework.kafka:spring-kafka'
+    // --- Messaging ---
+    implementation 'org.springframework.kafka:spring-kafka'
 
-	// --- Database ---
-	runtimeOnly 'org.postgresql:postgresql'
+    // --- Database ---
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
 
-	// --- Monitoring & Metrics ---
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'io.micrometer:micrometer-registry-prometheus'
+    // --- Monitoring & Metrics ---
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 
-	// --- Rate Limiting ---
-	implementation 'com.bucket4j:bucket4j_jdk17-core:8.17.0'
+    // --- Rate Limiting ---
+    implementation 'com.bucket4j:bucket4j_jdk17-core:8.17.0'
 
-	// --- Lombok ---
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    // --- Lombok ---
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	// --- Testing ---
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // --- Mapping ---
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
+    // --- Validation ---
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // --- Testing ---
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

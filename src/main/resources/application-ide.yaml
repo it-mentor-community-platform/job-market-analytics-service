@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/it_mentor_community_platform?currentSchema=job-market-analytics-service
+    url: jdbc:postgresql://localhost:5432/it_mentor_community_platform?currentSchema=job_market_analytics_service
     username: root
     password: password
     driver-class-name: org.postgresql.Driver

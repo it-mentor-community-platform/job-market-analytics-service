@@ -1,0 +1,1 @@
+ALTER TABLE search_queries ADD CONSTRAINT query_unique UNIQUE (query);
