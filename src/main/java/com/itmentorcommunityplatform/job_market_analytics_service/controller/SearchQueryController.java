@@ -56,8 +56,6 @@ public class SearchQueryController {
 
         List<SearchQueryResponse> responses = searchQueryService.getSearchQueries(isEnabled);
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(responses);
+        return ResponseEntity.ok(responses);
     }
 }
