@@ -10,3 +10,15 @@ rate-limit:
   capacity: 10
   refill: 10
   period: 60s
+
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+          - health
+          - info

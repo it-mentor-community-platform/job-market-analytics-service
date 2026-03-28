@@ -5,19 +5,23 @@ import com.itmentorcommunityplatform.job_market_analytics_service.dto.SearchQuer
 import com.itmentorcommunityplatform.job_market_analytics_service.dto.SearchQueryResponse;
 import com.itmentorcommunityplatform.job_market_analytics_service.exception.SearchQueryNotFoundException;
 import com.itmentorcommunityplatform.job_market_analytics_service.mapper.SearchQueryMapper;
+import com.itmentorcommunityplatform.job_market_analytics_service.metrics.SearchQueriesMetrics;
 import com.itmentorcommunityplatform.job_market_analytics_service.repository.SearchQueryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SearchQueryService {
 
     private final SearchQueryRepository searchQueryRepository;
     private final SearchQueryMapper searchQueryMapper;
+    private final SearchQueriesMetrics searchQueriesMetrics;
 
     public SearchQueryResponse save(SearchQueryRequest request) {
         SearchQuery searchQuery = searchQueryMapper.mapToSearchQuery(request);
@@ -27,6 +31,8 @@ public class SearchQueryService {
     }
 
     public List<SearchQueryResponse> getSearchQueries(Boolean isEnabled) {
+        searchQueriesMetrics.getSearchQueriesRequestsCounter().increment();
+
         List<SearchQuery> queries = isEnabled == null
                 ? searchQueryRepository.findAll()
                 : searchQueryRepository.findByIsEnabled(isEnabled);
