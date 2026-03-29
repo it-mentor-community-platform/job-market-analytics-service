@@ -1,5 +1,8 @@
 package com.itmentorcommunityplatform.job_market_analytics_service.controller;
 
+import com.itmentorcommunityplatform.job_market_analytics_service.docs.GetSearchQueriesDocs;
+import com.itmentorcommunityplatform.job_market_analytics_service.docs.SearchQueryDocs;
+import com.itmentorcommunityplatform.job_market_analytics_service.docs.UpdateSearchQueryDocs;
 import com.itmentorcommunityplatform.job_market_analytics_service.dto.SearchQueryRequest;
 import com.itmentorcommunityplatform.job_market_analytics_service.dto.SearchQueryResponse;
 import com.itmentorcommunityplatform.job_market_analytics_service.exception.AccessDeniedException;
@@ -20,6 +23,7 @@ public class SearchQueryController {
     private final SearchQueryService searchQueryService;
 
     @PostMapping("/search-query")
+    @SearchQueryDocs
     public ResponseEntity<SearchQueryResponse> searchQuery(
             @RequestHeader("X-User-Roles") List<String> roles,
             @RequestBody @Valid SearchQueryRequest request) {
@@ -36,6 +40,7 @@ public class SearchQueryController {
     }
 
     @PutMapping("/search-query/{id}")
+    @UpdateSearchQueryDocs
     public ResponseEntity<Void> updateSearchQuery(
             @RequestHeader("X-User-Roles") List<String> roles,
             @RequestBody @Valid SearchQueryRequest request,
@@ -51,6 +56,7 @@ public class SearchQueryController {
     }
 
     @GetMapping("/search-query")
+    @GetSearchQueriesDocs
     public ResponseEntity<List<SearchQueryResponse>> getSearchQueries(
             @RequestParam(required = false) Boolean isEnabled) {
 
