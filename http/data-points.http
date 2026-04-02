@@ -1,0 +1,27 @@
+### 1. Успешный запрос с from и to
+GET http://localhost:8086/api/job-market-analytics/data-points?searchQueryId=1&from=2026-01-01&to=2026-03-01
+Content-Type: application/json
+
+### 2. Успешный запрос без to (подставляется текущая дата)
+GET http://localhost:8086/api/job-market-analytics/data-points?searchQueryId=1&from=2026-01-01
+Content-Type: application/json
+
+### 3. Не передан searchQueryId (ожидается 400)
+GET http://localhost:8086/api/job-market-analytics/data-points?from=2026-01-01&to=2026-03-01
+Content-Type: application/json
+
+### 4. Не передан from (ожидается 400)
+GET http://localhost:8086/api/job-market-analytics/data-points?searchQueryId=1&to=2026-03-01
+Content-Type: application/json
+
+### 5. Неверный формат from (ожидается 400)
+GET http://localhost:8086/api/job-market-analytics/data-points?searchQueryId=1&from=01.01.2026&to=2026-03-01
+Content-Type: application/json
+
+### 6. Неверный формат to (ожидается 400)
+GET http://localhost:8086/api/job-market-analytics/data-points?searchQueryId=1&from=2026-01-01&to=01.03.2026
+Content-Type: application/json
+
+### 7. searchQueryId не число (ожидается 400)
+GET http://localhost:8086/api/job-market-analytics/data-points?searchQueryId=abc&from=2026-01-01&to=2026-03-01
+Content-Type: application/json
