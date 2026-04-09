@@ -1,5 +1,6 @@
 package com.itmentorcommunityplatform.job_market_analytics_service.controller;
 
+import com.itmentorcommunityplatform.job_market_analytics_service.dto.response.HhVacancySearchResponse;
 import com.itmentorcommunityplatform.job_market_analytics_service.service.VacancyService;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class VacancyControllerTest {
 
     @PostMapping("/test-search")
     @Hidden
-    public ResponseEntity<String> vacancySearchTest(@RequestParam String search) {
+    public ResponseEntity<HhVacancySearchResponse> vacancySearchTest(@RequestParam String search) {
         return ResponseEntity.ok(vacancyService.searchVacancies(search));
-    } 
+    }
 }
