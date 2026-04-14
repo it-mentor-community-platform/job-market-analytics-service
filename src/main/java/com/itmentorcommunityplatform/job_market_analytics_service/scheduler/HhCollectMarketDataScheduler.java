@@ -7,46 +7,21 @@ import com.itmentorcommunityplatform.job_market_analytics_service.repository.HhS
 import com.itmentorcommunityplatform.job_market_analytics_service.service.MarketDataCollectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class HhMarketDataScheduler {
+@ConditionalOnProperty(name = "scheduler.worker.enabled", matchIfMissing = true)
+public class HhCollectMarketDataScheduler {
 
     private final MarketDataCollectionService marketDataCollectionService;
     private final HhScheduledJobRepository hhScheduledJobRepository;
     private final ScheduledJobMapper scheduledJobMapper;
-
-    @Value("${scheduler.zone}")
-    private ZoneId hhApiZone;
-
-    @Value("${hh.collection.lookback-days}")
-    private int searchPeriodDays;
-
-    @Scheduled(
-            cron = "${scheduler.cron}",
-            zone = "${scheduler.zone}")
-    public void scheduleMarketDataJobs() {
-        OffsetDateTime now = OffsetDateTime.now(hhApiZone).truncatedTo(ChronoUnit.SECONDS);
-        LocalDate snapshotDate = now.toLocalDate();
-        OffsetDateTime searchDateFrom = now.minusDays(searchPeriodDays);
-        int createdJobs = hhScheduledJobRepository.scheduleJobs(snapshotDate, searchDateFrom, now);
-
-        if (createdJobs > 0) {
-            log.info("Scheduled market data jobs. snapshotDate={}, createdJobs={}", snapshotDate, createdJobs);
-        } else {
-            log.info("Scheduler worked but no new tasks were scheduled");
-        }
-    }
 
     @Scheduled(
             cron = "${scheduler.worker.cron}",

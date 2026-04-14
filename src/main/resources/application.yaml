@@ -15,11 +15,15 @@ rate-limit:
   initial-tokens: 0
 
 scheduler:
-  enabled: true
   zone: Europe/Moscow
-  cron: "0 0 0 * * *"
+  job-creator:
+    enabled: true
+    cron: "0 0 0 * * *"
+
   worker:
+    enabled: true
     cron: "0 */30 * * * *"
+
 
 management:
   metrics:

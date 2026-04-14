@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/job-marker-analytics")
+@RequestMapping("/api/job-market-analytics")
 @RequiredArgsConstructor
 public class VacancyControllerTest {
 
