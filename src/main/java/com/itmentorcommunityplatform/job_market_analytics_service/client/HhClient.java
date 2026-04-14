@@ -20,7 +20,6 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class HhClient {
-    private static final DateTimeFormatter HH_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXX");
 
     private final RestClient restClient;
     private final ProfileMetrics profileMetrics;
@@ -28,25 +27,18 @@ public class HhClient {
 
     public HhVacancySearchResponse searchVacancies(String query, OffsetDateTime dateFrom, OffsetDateTime dateTo, int page, int perPage) {
         waitForRateLimitPermit();
-        String from = dateFrom.truncatedTo(ChronoUnit.SECONDS).format(HH_DATE_TIME_FORMATTER);
-        String to = dateTo.truncatedTo(ChronoUnit.SECONDS).format(HH_DATE_TIME_FORMATTER);
-
+        String from = dateFrom.toLocalDate().toString();
+        String to = dateTo.toLocalDate().toString();
         try {
             HhVacancySearchResponse response = restClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/vacancies")
-                            .queryParam("text", "{text}")
-                            .queryParam("date_from", "{dateFrom}")
-                            .queryParam("date_to", "{dateTo}")
-                            .queryParam("page", "{page}")
-                            .queryParam("per_page", "{perPage}")
-                            .build(Map.of(
-                                    "text", query,
-                                    "dateFrom", from,
-                                    "dateTo", to,
-                                    "page", page,
-                                    "perPage", perPage
-                            )))
+                            .queryParam("text", query)
+                            .queryParam("date_from", from)
+                            .queryParam("date_to", to)
+                            .queryParam("page", page)
+                            .queryParam("per_page", perPage)
+                            .build())
                     .retrieve()
                     .body(HhVacancySearchResponse.class);
 
