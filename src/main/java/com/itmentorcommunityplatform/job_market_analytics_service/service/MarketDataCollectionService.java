@@ -55,20 +55,20 @@ public class MarketDataCollectionService {
 
         if (totalFound <= HH_RESULT_LIMIT) {
             fetchAllPages(searchText, from, to, firstPageResult, uniqueVacanciesById);
-            return;
+        }else {
+            if (!canSplitFurther(from, to)) {
+                log.warn("HH response still exceeds 2000 results in minimal time window - data may be distorted. searchQueryId={}, from={}, to={}, totalFound={}",
+                        searchRequest.id(), from, to, totalFound);
+                fetchAllPages(searchText, from, to, firstPageResult, uniqueVacanciesById);
+                return;
+            }
+            OffsetDateTime mid = midpoint(from, to);
+            firstPageResult=hhClient.searchVacancies(searchText, from, mid, FIRST_PAGE, PER_PAGE);
+            fetchAllPages(searchText, from, mid, firstPageResult, uniqueVacanciesById);
+
+            firstPageResult=hhClient.searchVacancies(searchText, mid, to, FIRST_PAGE, PER_PAGE);
+            fetchAllPages(searchText, mid, to, firstPageResult, uniqueVacanciesById);
         }
-
-        if (!canSplitFurther(from, to)) {
-            log.warn("HH response still exceeds 2000 results in minimal time window - data may be distorted. searchQueryId={}, from={}, to={}, totalFound={}",
-                    searchRequest.id(), from, to, totalFound);
-            fetchAllPages(searchText, from, to, firstPageResult, uniqueVacanciesById);
-            return;
-        }
-
-        OffsetDateTime mid = midpoint(from, to);
-
-        fetchVacancies(searchRequest, from, mid, uniqueVacanciesById);
-        fetchVacancies(searchRequest, mid, to, uniqueVacanciesById);
     }
 
     private void fetchAllPages(
