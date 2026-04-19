@@ -32,7 +32,7 @@ public interface MarketDataPointRepository extends CrudRepository<MarketDataPoin
             )
             ON CONFLICT (search_query_id, snapshot_date) DO NOTHING
             """)
-    int insertIgnoreRaw(
+    int insertIfNotExists(
             @Param("searchQueryId") Long searchQueryId,
             @Param("snapshotDate") LocalDate snapshotDate,
             @Param("vacancyCount") Integer vacancyCount,
@@ -42,7 +42,7 @@ public interface MarketDataPointRepository extends CrudRepository<MarketDataPoin
     );
 
     default int insertIfAbsent(MarketDataPoint point) {
-        return insertIgnoreRaw(
+        return insertIfNotExists(
                 point.getSearchQueryId(),
                 point.getSnapshotDate(),
                 point.getVacancyCount(),

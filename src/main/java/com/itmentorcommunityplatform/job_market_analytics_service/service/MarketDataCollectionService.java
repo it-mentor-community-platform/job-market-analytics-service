@@ -31,23 +31,24 @@ public class MarketDataCollectionService {
     private final HhClient hhClient;
 
     public int collectAndSaveMarketData(HhMarketDataRequest searchRequest) {
-        Map<String, HhVacancyItemResponse> uniqueVacanciesById = new HashMap<>();
-
-        fetchVacancies(searchRequest, searchRequest.dateFrom(), searchRequest.dateTo(), uniqueVacanciesById);
-
-        List<HhVacancyItemResponse> vacanciesValue = new ArrayList<>(uniqueVacanciesById.values());
+        List<HhVacancyItemResponse> vacanciesValue = new ArrayList<>(
+                fetchVacancies(searchRequest,
+                        searchRequest.dateFrom(),
+                        searchRequest.dateTo())
+                        .values());
         MarketDataPoint point = marketDataAggregationService
                 .aggregateToMarketDataPoint(searchRequest.id(), searchRequest.snapshotDate(), vacanciesValue);
 
         return marketDataPointRepository.insertIfAbsent(point);
     }
 
-    private void fetchVacancies(
+    private Map<String, HhVacancyItemResponse> fetchVacancies(
             HhMarketDataRequest searchRequest,
             OffsetDateTime from,
-            OffsetDateTime to,
-            Map<String, HhVacancyItemResponse> uniqueVacanciesById
+            OffsetDateTime to
     ) {
+        Map<String, HhVacancyItemResponse> uniqueVacanciesById = new HashMap<>();
+
         String searchText = searchRequest.searchQueryText();
 
         HhVacancySearchResponse firstPageResult = hhClient.searchVacancies(searchText, from, to, FIRST_PAGE, PER_PAGE);
@@ -55,20 +56,20 @@ public class MarketDataCollectionService {
 
         if (totalFound <= HH_RESULT_LIMIT) {
             fetchAllPages(searchText, from, to, firstPageResult, uniqueVacanciesById);
-        }else {
+        } else {
             if (!canSplitFurther(from, to)) {
                 log.warn("HH response still exceeds 2000 results in minimal time window - data may be distorted. searchQueryId={}, from={}, to={}, totalFound={}",
                         searchRequest.id(), from, to, totalFound);
                 fetchAllPages(searchText, from, to, firstPageResult, uniqueVacanciesById);
-                return;
             }
             OffsetDateTime mid = midpoint(from, to);
-            firstPageResult=hhClient.searchVacancies(searchText, from, mid, FIRST_PAGE, PER_PAGE);
+            firstPageResult = hhClient.searchVacancies(searchText, from, mid, FIRST_PAGE, PER_PAGE);
             fetchAllPages(searchText, from, mid, firstPageResult, uniqueVacanciesById);
 
-            firstPageResult=hhClient.searchVacancies(searchText, mid, to, FIRST_PAGE, PER_PAGE);
+            firstPageResult = hhClient.searchVacancies(searchText, mid, to, FIRST_PAGE, PER_PAGE);
             fetchAllPages(searchText, mid, to, firstPageResult, uniqueVacanciesById);
         }
+        return uniqueVacanciesById;
     }
 
     private void fetchAllPages(
