@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changesets/002-unique-constraint.sql
   - include:
       file: db/changelog/changesets/003-change-constraint.sql
+  - include:
+      file: db/changelog/changesets/004-create-table-jobs.sql

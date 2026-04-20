@@ -1,15 +1,33 @@
 spring:
   application:
     name: job-market-analytics-service
+  config:
+    import: optional:file:.env[.properties]
 
 hh:
   api:
     url: https://api.hh.ru
+  collection:
+    lookback-days: 60
+  app-token: ${HH_APP_ACCESS_TOKEN}
+  email: ${HH_APP_EMAIL}
 
 rate-limit:
-  capacity: 10
-  refill: 10
-  period: 60s
+  capacity: 1
+  refill: 1
+  period: 2s
+  initial-tokens: 0
+
+scheduler:
+  zone: Europe/Moscow
+  job-creator:
+    enabled: true
+    cron: "0 0 0 * * *"
+
+  worker:
+    enabled: true
+    cron: "0 */30 * * * *"
+
 
 management:
   metrics:
