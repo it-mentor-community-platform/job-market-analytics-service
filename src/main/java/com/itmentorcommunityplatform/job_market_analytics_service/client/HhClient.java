@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriUtils;
 
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +32,7 @@ public class HhClient {
         String from = dateFrom.truncatedTo(ChronoUnit.SECONDS).format(HH_DATE_TIME_FORMATTER);
         String to = dateTo.truncatedTo(ChronoUnit.SECONDS).format(HH_DATE_TIME_FORMATTER);
 
-        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8).replace("+", "%20");
+        String encodedQuery = UriUtils.encode(query, StandardCharsets.UTF_8).replace("+", "%20");
         String encodedFrom = from.replace("+", "%2B");
         String encodedTo = to.replace("+", "%2B");
 

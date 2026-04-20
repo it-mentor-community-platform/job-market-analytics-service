@@ -8,6 +8,11 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Configuration
 public class RestClientConfig {
+    @Value("${hh.app-token}")
+    String applicationAccessToken;
+
+    @Value("${hh.email}")
+    String email;
 
     @Bean
     public RestClient hhRestClient(@Value("${hh.api.url}") String baseUrl) {
@@ -17,6 +22,8 @@ public class RestClientConfig {
         return RestClient.builder()
                 .baseUrl(baseUrl)
                 .uriBuilderFactory(factory)
+                .defaultHeader("User-Agent", "job-market-analytics-service/1.0 (" + email + ")")
+                .defaultHeader("Authorization", "Bearer " + applicationAccessToken)
                 .build();
     }
 }
