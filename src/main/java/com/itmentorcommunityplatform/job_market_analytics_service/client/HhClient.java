@@ -10,12 +10,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.util.UriUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -32,20 +31,22 @@ public class HhClient {
         String from = dateFrom.truncatedTo(ChronoUnit.SECONDS).format(HH_DATE_TIME_FORMATTER);
         String to = dateTo.truncatedTo(ChronoUnit.SECONDS).format(HH_DATE_TIME_FORMATTER);
 
-        String encodedQuery = UriUtils.encode(query, StandardCharsets.UTF_8).replace("+", "%20");
-        String encodedFrom = from.replace("+", "%2B");
-        String encodedTo = to.replace("+", "%2B");
-
         try {
             HhVacancySearchResponse response = restClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/vacancies")
-                            .queryParam("text", encodedQuery)
-                            .queryParam("date_from", encodedFrom)
-                            .queryParam("date_to", encodedTo)
-                            .queryParam("page", page)
-                            .queryParam("per_page", perPage)
-                            .build())
+                            .queryParam("text", "{text}")
+                            .queryParam("date_from", "{dateFrom}")
+                            .queryParam("date_to", "{dateTo}")
+                            .queryParam("page", "{page}")
+                            .queryParam("per_page", "{perPage}")
+                            .build(Map.of(
+                                    "text", query,
+                                    "dateFrom", from,
+                                    "dateTo", to,
+                                    "page", page,
+                                    "perPage", perPage
+                            )))
                     .retrieve()
                     .body(HhVacancySearchResponse.class);
             if (response == null) {
