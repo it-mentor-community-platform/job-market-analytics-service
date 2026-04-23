@@ -24,10 +24,10 @@ public class SearchQueryService {
     private final SearchQueriesMetrics searchQueriesMetrics;
 
     public SearchQueryResponse save(SearchQueryRequest request) {
-        SearchQuery searchQuery = searchQueryMapper.mapToSearchQuery(request);
+        SearchQuery searchQuery = searchQueryMapper.toSearchQuery(request);
         SearchQuery saved = searchQueryRepository.save(searchQuery);
 
-        return searchQueryMapper.mapToSearchQueryResponse(saved);
+        return searchQueryMapper.toSearchQueryResponse(saved);
     }
 
     public List<SearchQueryResponse> getSearchQueries(Boolean isEnabled) {
@@ -38,14 +38,14 @@ public class SearchQueryService {
                 : searchQueryRepository.findByIsEnabled(isEnabled);
 
         return queries.stream()
-                .map(searchQueryMapper::mapToSearchQueryResponse)
+                .map(searchQueryMapper::toSearchQueryResponse)
                 .toList();
     }
 
     @Transactional
     public void update(Long queryId, SearchQueryRequest request) {
         SearchQuery existingSearchQuery = searchQueryRepository.findById(queryId)
-                .orElseThrow(() -> new SearchQueryNotFoundException("Search query not found"));
+                .orElseThrow(() -> new SearchQueryNotFoundException("Search searchQueryText not found"));
 
         existingSearchQuery.setTitle(request.title());
         existingSearchQuery.setQuery(request.query());
