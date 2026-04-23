@@ -7,8 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface DataPointMapper {
-    @Mapping(target = "date", expression = "java(point.getSnapshotDate().format(java.time.format.DateTimeFormatter.ofPattern(\"dd.MM.yyyy\")))")
-    @Mapping(target = "vacancyCount", source = "vacancyCount")
+    @Mapping(target = "date", source = "snapshotDate")
     @Mapping(target = "averageSalary", source = "avgSalary")
     DataPointResponseDto toDto(MarketDataPoint point);
 }

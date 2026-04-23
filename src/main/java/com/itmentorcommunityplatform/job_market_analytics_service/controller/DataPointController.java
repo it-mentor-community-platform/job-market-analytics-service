@@ -26,7 +26,9 @@ public class DataPointController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to){
 
-        if(to == null) to = LocalDate.now();
+        if (to == null) {
+            to = LocalDate.now();
+        }
         List<DataPointResponseDto> response = dataPointService.getDataPoints(searchQueryId, from, to);
         return ResponseEntity.ok(response);
     }

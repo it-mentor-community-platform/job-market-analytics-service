@@ -19,10 +19,9 @@ public class DataPointService {
     private final DataPointMapper dataPointMapper;
 
     public List<DataPointResponseDto> getDataPoints(Long searchQueryId, LocalDate from, LocalDate to) {
-        if (to == null) to = LocalDate.now();
 
         return marketDataPointRepository
-                .findBySearchQueryIdAndSnapshotDateBetween(searchQueryId,from,to)
+                .findBySearchQueryIdAndSnapshotDateBetween(searchQueryId, from, to)
                 .stream()
                 .map(dataPointMapper::toDto)
                 .toList();
