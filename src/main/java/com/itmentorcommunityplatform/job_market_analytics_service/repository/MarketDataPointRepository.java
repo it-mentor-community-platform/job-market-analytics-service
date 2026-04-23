@@ -1,5 +1,6 @@
 package com.itmentorcommunityplatform.job_market_analytics_service.repository;
 
+
 import com.itmentorcommunityplatform.job_market_analytics_service.domain.MarketDataPoint;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public interface MarketDataPointRepository extends CrudRepository<MarketDataPoint, Long> {
 
@@ -52,4 +54,6 @@ public interface MarketDataPointRepository extends CrudRepository<MarketDataPoin
         );
 
     }
+    List<MarketDataPoint> findBySearchQueryIdAndSnapshotDateBetween(
+            Long searchQueryId, LocalDate from, LocalDate to);
 }
