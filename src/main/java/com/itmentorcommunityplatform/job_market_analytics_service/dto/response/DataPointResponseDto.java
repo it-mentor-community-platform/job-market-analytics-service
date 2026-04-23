@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public record DataPointResponseDto(
         @JsonFormat(pattern = "dd.MM.yyyy")
         LocalDate date,
-    int vacancyCount,
-    BigDecimal averageSalary
+        int vacancyCount,
+        BigDecimal averageSalary
 ) {
 }
