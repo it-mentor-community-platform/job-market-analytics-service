@@ -10,8 +10,8 @@ import org.mapstruct.Mapping;
 public interface SearchQueryMapper {
 
     @Mapping(target = "enabled", source = "isEnabled")
-    SearchQuery mapToSearchQuery(SearchQueryRequest searchQueryRequest);
+    SearchQuery toSearchQuery(SearchQueryRequest searchQueryRequest);
 
     @Mapping(target = "isEnabled", source = "enabled")
-    SearchQueryResponse mapToSearchQueryResponse(SearchQuery searchQuery);
+    SearchQueryResponse toSearchQueryResponse(SearchQuery searchQuery);
 }

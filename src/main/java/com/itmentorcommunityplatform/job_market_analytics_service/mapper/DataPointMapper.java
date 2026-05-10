@@ -1,0 +1,13 @@
+package com.itmentorcommunityplatform.job_market_analytics_service.mapper;
+
+import com.itmentorcommunityplatform.job_market_analytics_service.domain.MarketDataPoint;
+import com.itmentorcommunityplatform.job_market_analytics_service.dto.response.DataPointResponseDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface DataPointMapper {
+    @Mapping(target = "date", source = "snapshotDate")
+    @Mapping(target = "averageSalary", source = "avgSalary")
+    DataPointResponseDto toDto(MarketDataPoint point);
+}

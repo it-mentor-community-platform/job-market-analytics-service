@@ -14,11 +14,13 @@ public class RateLimitConfig {
     public Bucket hhApiBucket(
             @Value("${rate-limit.capacity}") int capacity,
             @Value("${rate-limit.refill}") int refill,
+            @Value("${rate-limit.initial-tokens}") int initialTokens,
             @Value("${rate-limit.period}") Duration period
     ) {
         Bandwidth limit = Bandwidth.builder()
                 .capacity(capacity)
                 .refillGreedy(refill, period)
+                .initialTokens(initialTokens)
                 .build();
 
         return Bucket.builder()
