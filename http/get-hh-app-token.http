@@ -1,0 +1,9 @@
+### Получение токена приложения hh api 200 ok
+#(Вставить client_id и client_secret из личного кабинета)
+POST https://api.hh.ru/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+    &client_id="получить в личном кабинете"
+    &client_secret="получить в личном кабинете"
+
