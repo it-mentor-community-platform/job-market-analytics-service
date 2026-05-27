@@ -2,7 +2,7 @@ package com.itmentorcommunityplatform.job_market_analytics_service.client;
 
 import com.itmentorcommunityplatform.job_market_analytics_service.dto.response.HhVacancySearchResponse;
 import com.itmentorcommunityplatform.job_market_analytics_service.exception.ExternalServiceException;
-import com.itmentorcommunityplatform.job_market_analytics_service.metrics.ProfileMetrics;
+import com.itmentorcommunityplatform.job_market_analytics_service.metrics.RequestHhApiMetrics;
 import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class HhClient {
     private static final DateTimeFormatter HH_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXX");
 
     private final RestClient restClient;
-    private final ProfileMetrics profileMetrics;
+    private final RequestHhApiMetrics requestHhApiMetrics;
     private final Bucket hhApiBucket;
 
     public HhVacancySearchResponse searchVacancies(String query, OffsetDateTime dateFrom, OffsetDateTime dateTo, int page, int perPage) {
@@ -54,21 +54,22 @@ public class HhClient {
             }
 
             log.debug("HH API request completed. searchQueryText='{}', page={}, perPage={}", query, page, perPage);
+            requestHhApiMetrics.getRequestSuccessCounter().increment();
             return response;
 
         } catch (HttpClientErrorException.BadRequest e) {
             log.error("HH API returned 400 Bad Request. searchQueryText='{}', from='{}', to='{}', body={}",
                     query, from, to, e.getResponseBodyAsString(), e);
-            profileMetrics.getRequestErrorCounter().increment();
+            requestHhApiMetrics.getRequestErrorCounter().increment();
             throw new ExternalServiceException("Invalid request to HH API");
         } catch (RestClientException e) {
             log.error("HH API request failed. searchQueryText='{}', from='{}', to='{}'",
                     query, from, to, e);
-            profileMetrics.getRequestErrorCounter().increment();
+            requestHhApiMetrics.getRequestErrorCounter().increment();
             throw new ExternalServiceException("Failed to fetch data from HH API");
         } catch (Exception e) {
             log.error("HH API request failed for searchQueryText '{}'", query, e);
-            profileMetrics.getRequestErrorCounter().increment();
+            requestHhApiMetrics.getRequestErrorCounter().increment();
             throw new ExternalServiceException("Failed to fetch data from HH API");
         }
     }
