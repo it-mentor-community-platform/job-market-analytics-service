@@ -9,7 +9,7 @@ public record HhVacancyItemResponse(
         @JsonProperty("id")
         String id,
 
-        @JsonProperty("salary")
+        @JsonProperty("salary_range")
         HhSalaryResponse salary
 ) {
 }
